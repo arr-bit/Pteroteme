@@ -1,6 +1,6 @@
 <style>
 body {
-    background-image: url('https://unggah.web.id/gvnpmG0MNE5P.jpg') !important;
+    background-image: url('https://unggah.web.id/uzTe9psC42Q-.jpg') !important;
     background-size: cover !important;
     background-attachment: fixed !important;
     background-position: center !important;
