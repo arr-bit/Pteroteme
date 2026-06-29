@@ -1,0 +1,311 @@
+<style>
+body {
+    background-image: url('https://unggah.web.id/gvnpmG0MNE5P.jpg') !important;
+    background-size: cover !important;
+    background-attachment: fixed !important;
+    background-position: center !important;
+}
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Mini Button */
+#music-player-mini {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+#music-player-mini:hover { transform: scale(1.12); }
+
+/* Expanded Player */
+#music-player-expanded {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 290px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.13);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.28);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    padding: 18px;
+    display: none;
+    color: white;
+    font-family: sans-serif;
+}
+.player-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+.player-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    opacity: 0.85;
+    text-transform: uppercase;
+}
+.player-close {
+    cursor: pointer;
+    opacity: 0.6;
+    font-size: 18px;
+    line-height: 1;
+    transition: opacity 0.2s;
+}
+.player-close:hover { opacity: 1; }
+
+/* Disc */
+.song-info { text-align: center; margin-bottom: 14px; }
+.disc-wrap {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    animation: spin 4s linear infinite;
+}
+.disc-wrap.paused { animation-play-state: paused; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.song-name { font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* Equalizer */
+.equalizer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    height: 24px;
+    margin-bottom: 12px;
+}
+.eq-bar {
+    width: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.8);
+    animation: eq 0.6s ease infinite alternate;
+}
+.eq-bar:nth-child(1) { animation-duration: 0.5s; height: 8px; }
+.eq-bar:nth-child(2) { animation-duration: 0.7s; height: 16px; }
+.eq-bar:nth-child(3) { animation-duration: 0.4s; height: 22px; }
+.eq-bar:nth-child(4) { animation-duration: 0.8s; height: 14px; }
+.eq-bar:nth-child(5) { animation-duration: 0.55s; height: 20px; }
+.eq-bar:nth-child(6) { animation-duration: 0.65s; height: 10px; }
+.eq-bar:nth-child(7) { animation-duration: 0.45s; height: 18px; }
+@keyframes eq {
+    from { transform: scaleY(0.3); opacity: 0.5; }
+    to { transform: scaleY(1); opacity: 1; }
+}
+.equalizer.paused .eq-bar { animation-play-state: paused; }
+
+/* Progress */
+.progress-bar-bg {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 4px;
+}
+.progress-bar-fill {
+    height: 4px;
+    background: white;
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.5s linear;
+}
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    opacity: 0.55;
+    margin-bottom: 12px;
+}
+
+/* Controls */
+.player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 14px;
+}
+.ctrl-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    opacity: 0.8;
+    padding: 4px;
+    transition: all 0.2s;
+    line-height: 1;
+}
+.ctrl-btn:hover { opacity: 1; transform: scale(1.15); }
+.ctrl-btn.play-btn {
+    font-size: 22px;
+    background: rgba(255,255,255,0.22);
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Volume */
+.volume-container { display: flex; align-items: center; gap: 8px; }
+.volume-container span { font-size: 13px; opacity: 0.6; }
+.volume-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.25);
+    outline: none;
+    cursor: pointer;
+}
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0,0,0,0.3);
+}
+</style>
+
+<audio id="bg-music" loop>
+    <source src="https://unggah.web.id/uh1Cu6qdmK6Q.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Mini -->
+<div id="music-player-mini" onclick="openPlayer()" title="Music Player">🎵</div>
+
+<!-- Expanded -->
+<div id="music-player-expanded">
+    <div class="player-header">
+        <div class="player-title">🎧 Now Playing</div>
+        <div class="player-close" onclick="closePlayer()">✕</div>
+    </div>
+    <div class="song-info">
+        <div class="disc-wrap paused" id="disc-icon">💿</div>
+        <div class="song-name">Background Music</div>
+    </div>
+    <div class="equalizer paused" id="equalizer">
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+    </div>
+    <div class="progress-bar-bg" onclick="seekMusic(event)">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <div class="time-info">
+        <span id="time-current">0:00</span>
+        <span id="time-total">0:00</span>
+    </div>
+    <div class="player-controls">
+        <button class="ctrl-btn" onclick="restartMusic()">⏮</button>
+        <button class="ctrl-btn play-btn" id="play-btn" onclick="toggleMusic()">▶</button>
+        <button class="ctrl-btn" onclick="toggleMute()" id="mute-btn">🔊</button>
+    </div>
+    <div class="volume-container">
+        <span>🔈</span>
+        <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70" oninput="setVolume(this.value)">
+        <span>🔊</span>
+    </div>
+</div>
+
+<script>
+const music = document.getElementById("bg-music");
+const playBtn = document.getElementById("play-btn");
+const discIcon = document.getElementById("disc-icon");
+const equalizer = document.getElementById("equalizer");
+const progressFill = document.getElementById("progress-fill");
+const timeCurrent = document.getElementById("time-current");
+const timeTotal = document.getElementById("time-total");
+const miniPlayer = document.getElementById("music-player-mini");
+const expandedPlayer = document.getElementById("music-player-expanded");
+
+music.volume = 0.7;
+let started = false, muted = false;
+
+function formatTime(s) {
+    if(isNaN(s)) return "0:00";
+    const m = Math.floor(s/60), sec = Math.floor(s%60);
+    return m + ":" + (sec < 10 ? "0" : "") + sec;
+}
+function openPlayer() {
+    miniPlayer.style.display = "none";
+    expandedPlayer.style.display = "block";
+    if(!started) { music.play().catch(()=>{}); started = true; updatePlayState(); }
+}
+function closePlayer() {
+    expandedPlayer.style.display = "none";
+    miniPlayer.style.display = "flex";
+}
+function toggleMusic() {
+    if(!started) { music.play().catch(()=>{}); started = true; }
+    else if(music.paused) { music.play(); }
+    else { music.pause(); }
+    updatePlayState();
+}
+function updatePlayState() {
+    if(music.paused) {
+        playBtn.innerHTML = "▶";
+        discIcon.classList.add("paused");
+        equalizer.classList.add("paused");
+        miniPlayer.innerHTML = "🎵";
+    } else {
+        playBtn.innerHTML = "⏸";
+        discIcon.classList.remove("paused");
+        equalizer.classList.remove("paused");
+        miniPlayer.innerHTML = "🎶";
+    }
+}
+function restartMusic() { music.currentTime = 0; music.play(); started = true; updatePlayState(); }
+function toggleMute() { muted = !muted; music.muted = muted; document.getElementById("mute-btn").innerHTML = muted ? "🔇" : "🔊"; }
+function setVolume(val) { music.volume = val/100; muted = false; music.muted = false; document.getElementById("mute-btn").innerHTML = "🔊"; }
+function seekMusic(e) { const rect = e.currentTarget.getBoundingClientRect(); const ratio = (e.clientX - rect.left) / rect.width; if(music.duration) music.currentTime = ratio * music.duration; }
+music.addEventListener("timeupdate", () => {
+    if(music.duration) {
+        progressFill.style.width = (music.currentTime / music.duration * 100) + "%";
+        timeCurrent.textContent = formatTime(music.currentTime);
+        timeTotal.textContent = formatTime(music.duration);
+    }
+});
+music.addEventListener("play", updatePlayState);
+music.addEventListener("pause", updatePlayState);
+window.addEventListener("click", () => { if(!started) { music.play().catch(()=>{}); started = true; updatePlayState(); } }, { once: true });
+</script>
